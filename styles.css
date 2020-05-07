@@ -28,6 +28,8 @@ body
     text-align: center;
     font-family: cursive, sans-serif;
     color: black;
+    position: relative;
+    overflow: hidden;
 }
 
 #gameOver 
@@ -113,6 +115,12 @@ body
     height: 16px;
     margin: 0px 3px;
 
+}
+
+.fruit
+{
+    display: none;
+    position: absolute;
 }
 
 @media (min-width: 768px) and (max-width: 991px)
