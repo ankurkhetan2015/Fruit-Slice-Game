@@ -3,6 +3,7 @@ var currentScore;
 var trialsLeft;
 var step;
 var action;
+var winSize;
 var allfruits = ['apples', 'banana', 'cherries', 'coconut', 'kiwi', 'lemons', 'mango', 'orange', 'pears', 'strawberries', 'tomatoes', 'watermelon'];
 var numFruits = allfruits.length - 1; //index of first fruit is 0
 
@@ -27,6 +28,9 @@ $(function()
 			currentScore = 0;
 			$("#scorevalue").html(currentScore);
 			
+			//hide gameover box initially
+			$("#gameOver").hide();
+
 			//show trials left
 			$("#trialsleft").show();
 			trialsLeft = 3;
@@ -40,22 +44,6 @@ $(function()
 		}
 	});
 });
-
-
-			//define random step
-			//(2)move food down by 1 step every few seconds
-				//check if fruit is very low(disappearing)
-					//if no, repeat (2)
-					//else, check if any trials left
-						//if yes
-							//remove a heart 
-							//then repeat (1)
-						//else
-							//show gameover box
-							//change button to display "start game"
-
-
-
 
 //slicing fruit
 	//play some background sound(confirms fruit as cut)
@@ -105,17 +93,24 @@ function startGame()
 				
 				//show gameover box
 				$("#gameOver").show();
-				$("#gameOver").html('<p>Game Over!!!</p><p>Your Score is: ' + currentScore + '</p>');
+				winSize = $("#gamebox").width();
+				if(winSize < 450)
+				{
+					$("#gameOver").html('<p><p>Your Score is: ' + currentScore + '</p>');
+				}
+				else
+				{
+					$("#gameOver").html('<p>Game Over!!!</p><p>Your Score is: ' + currentScore + '</p>');
+				}
 
+				//hide trialsleft box
+				$("#trialsleft").hide();
 				//stop the game
 				stopGame();
 			}
 		}
 
 	}, 10);
-
-
-
 }
 
 //function to generate a random fruit to send
@@ -131,9 +126,28 @@ function generateFruit()
 	
 	//choose a random fruit
 	chooseFruit();
-	
+
+	//correct the fruit size according to screen size
+	winSize = $("#gamebox").width();
+	if(winSize >= 650)
+	{
+		$("#fruits").css('width', 100)
+		winSize -= 100;
+	}
+
+	else if(winSize >= 450 && winSize < 650)
+	{
+		$("#fruits").css('width', 50)
+		winSize -= 50;
+	}
+	else if(winSize < 450)
+	{
+		$("#fruits").css('width', 25)
+		winSize -= 25;
+	}
+
 	//random fruit position
-	$("#fruits").css({'left' : Math.round(350*Math.random()), 'top' : -50});
+	$("#fruits").css({'left' : Math.round(winSize * Math.random()), 'top' : -50});
 
 	//generate random step, changing step
 	step = 1 + Math.round(5*Math.random());
