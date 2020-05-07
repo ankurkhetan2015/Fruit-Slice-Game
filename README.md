@@ -1,1 +1,1 @@
-# Fruit slicer game made for fun using HTML, CSS and JQuery
+Fruit slicer game made for fun using HTML, CSS and JQuery
