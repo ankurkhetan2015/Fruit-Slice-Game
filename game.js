@@ -41,7 +41,7 @@ $("#startreset").click(function()
 		$("#startreset").html("Reset Game");
 
 		//start the game
-		startGame();
+		sendFruit();
 	}
 });
 
@@ -53,6 +53,16 @@ $("#fruits").mouseover(function()
 
 	//play cut audio
 	document.getElementById("cutsound").play();
+
+	//stop fruit from going further down
+	clearInterval(action);
+
+	//show animation while cutting
+	$("#fruits").hide("explode", 300);
+
+
+	//send next fruit
+	setTimeout(sendFruit, 300);
 
 });
 //slicing fruit
@@ -71,7 +81,7 @@ function addHearts()
 }
 
 //function to start the game (send fruits)
-function startGame()
+function sendFruit()
 {
 	generateFruit();
 
@@ -119,11 +129,11 @@ function startGame()
 				//hide trialsleft box
 				$("#trialsleft").hide();
 				//stop the game
-				stopGame();
+				stopFruit();
 			}
 		}
 
-	}, 20);
+	}, 10);
 }
 
 //function to generate a random fruit to send
@@ -167,7 +177,7 @@ function generateFruit()
 }
 
 //stop the game and stop dropping the fruits
-function stopGame()
+function stopFruit()
 {
 	clearInterval(action);
 	$("#fruits").hide();
