@@ -9,42 +9,52 @@ var numFruits = allfruits.length - 1; //index of first fruit is 0
 
 $(function()
 {	
-	//click on start-reset button
-	$("#startreset").click(function()
-	{
-		//check if playing
-		if(playing == true)
-		{			
-			//reload page
-			location.reload();
-		}
+
+//click on start-reset button
+$("#startreset").click(function()
+{
+	//check if playing
+	if(playing == true)
+	{			
+		//reload page
+		location.reload();
+	}
+	
+	// if not playing
+	else
+	{			
+		playing = true;
 		
-		// if not playing
-		else
-		{			
-			playing = true;
-			
-			//set score to 0
-			currentScore = 0;
-			$("#scorevalue").html(currentScore);
-			
-			//hide gameover box initially
-			$("#gameOver").hide();
+		//set score to 0
+		currentScore = 0;
+		$("#scorevalue").html(currentScore);
+		
+		//hide gameover box initially
+		$("#gameOver").hide();
 
-			//show trials left
-			$("#trialsleft").show();
-			trialsLeft = 3;
-			addHearts();
+		//show trials left
+		$("#trialsleft").show();
+		trialsLeft = 3;
+		addHearts();
 
-			//change button text to "reset game"
-			$("#startreset").html("Reset Game");
+		//change button text to "reset game"
+		$("#startreset").html("Reset Game");
 
-			//start the game
-			startGame();
-		}
-	});
+		//start the game
+		startGame();
+	}
 });
 
+$("#fruits").mouseover(function()
+{
+	//update the score
+	currentScore++;
+	$("#scorevalue").html(currentScore);
+
+	//play cut audio
+	document.getElementById("cutsound").play();
+
+});
 //slicing fruit
 	//play some background sound(confirms fruit as cut)
 	//explode the fruit
@@ -65,7 +75,7 @@ function startGame()
 {
 	generateFruit();
 
-	//move food down by 1 step every few milliseconds, 10 right now
+	//move food down by 1 step every few milliseconds, 20 right now
 	action = setInterval(function()
 	{	
 		//move food by a step
@@ -90,6 +100,9 @@ function startGame()
 
 				//change button text to "start game"
 				$("#startreset").html("Start Game");
+
+				//play game over sound
+				document.getElementById("endsound").play();
 				
 				//show gameover box
 				$("#gameOver").show();
@@ -110,7 +123,7 @@ function startGame()
 			}
 		}
 
-	}, 10);
+	}, 20);
 }
 
 //function to generate a random fruit to send
@@ -137,13 +150,13 @@ function generateFruit()
 
 	else if(winSize >= 450 && winSize < 650)
 	{
-		$("#fruits").css('width', 50)
-		winSize -= 50;
+		$("#fruits").css('width', 80)
+		winSize -= 80;
 	}
 	else if(winSize < 450)
 	{
-		$("#fruits").css('width', 25)
-		winSize -= 25;
+		$("#fruits").css('width', 50)
+		winSize -= 50;
 	}
 
 	//random fruit position
@@ -159,3 +172,5 @@ function stopGame()
 	clearInterval(action);
 	$("#fruits").hide();
 }
+
+});
