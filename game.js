@@ -2,6 +2,8 @@ var playing = false;
 var currentScore;
 var trialsLeft;
 var step;
+var lifespeed;
+var initialSpeed = 1;
 var action;
 var winSize;
 var allfruits = ['apples', 'banana', 'cherries', 'coconut', 'kiwi', 'lemons', 'mango', 'orange', 'pears', 'strawberries', 'tomatoes', 'watermelon'];
@@ -85,7 +87,11 @@ function sendFruit()
 {
 	generateFruit();
 
-	//move food down by 1 step every few milliseconds, 20 right now
+	if(currentScore % 20 == 0 && currentScore !== 0 && trialsLeft < 3)
+	{
+		sendLife();
+	}
+	//move food down by 1 step every few (x) milliseconds
 	action = setInterval(function()
 	{	
 		//move food by a step
@@ -152,28 +158,72 @@ function generateFruit()
 
 	//correct the fruit size according to screen size
 	winSize = $("#gamebox").width();
-	if(winSize >= 650)
-	{
-		$("#fruits").css('width', 100)
-		winSize -= 100;
-	}
-
-	else if(winSize >= 450 && winSize < 650)
-	{
-		$("#fruits").css('width', 80)
-		winSize -= 80;
-	}
-	else if(winSize < 450)
+	if(winSize >= 670)
 	{
 		$("#fruits").css('width', 50)
 		winSize -= 50;
 	}
 
-	//random fruit position
-	$("#fruits").css({'left' : Math.round(winSize * Math.random()), 'top' : -50});
+	else if(winSize < 670)
+	{
+		$("#fruits").css('width', 40)
+		winSize -= 40;
+	}
 
+	//random fruit position
+	$("#fruits").css({'left' : Math.round(winSize * Math.random()), 'top' : -100});
+
+	if(currentScore % 10 == 0 && currentScore !== 0 && initialSpeed < 3)
+	{
+		initialSpeed++;
+	}
 	//generate random step, changing step
-	step = 1 + Math.round(5*Math.random());
+	step = initialSpeed + Math.round(5*Math.random());
+	
+	if(step > 6)
+	{
+		step = 6;
+	}
+}
+
+//send extra life option
+function sendLife()
+{
+	$(".extraLife").show();
+	$(".extraLife").attr('src', 'images/heart.png');
+
+	winSize = $("#gamebox").width();
+	if(winSize >= 670)
+	{
+		$(".extraLife").css('width', 50)
+		winSize -= 50;
+	}
+
+	else if(winSize < 670)
+	{
+		$(".extraLife").css('width', 40)
+		winSize -= 40;
+	}
+
+	$(".extraLife").css({'left' : Math.round(winSize * Math.random()), 'top' : -100});
+	lifespeed = 2;
+	action = setInterval(function()
+	{
+		$(".extraLife").css('top', $(".extraLife").position().top + lifespeed);
+	}, 10);
+	
+
+	$(".extraLife").mouseover(function()
+	{
+		//play cut audio
+		document.getElementById("lifesound").play();
+
+		//show animation while getting life
+		$(".extraLife").hide("pulsate", 300);
+		trialsLeft++;
+		addHearts();
+	});
+
 }
 
 //stop the game and stop dropping the fruits
@@ -182,5 +232,6 @@ function stopFruit()
 	clearInterval(action);
 	$("#fruits").hide();
 }
+
 
 });
