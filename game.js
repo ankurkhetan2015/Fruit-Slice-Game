@@ -3,7 +3,7 @@ var currentScore;
 var trialsLeft;
 var step;
 var lifespeed;
-var initialSpeed = 1;
+var initialSpeed;
 var action;
 var winSize;
 var allfruits = ['apples', 'banana', 'cherries', 'coconut', 'kiwi', 'lemons', 'mango', 'orange', 'pears', 'strawberries', 'tomatoes', 'watermelon'];
@@ -31,6 +31,9 @@ $("#startreset").click(function()
 		currentScore = 0;
 		$("#scorevalue").html(currentScore);
 		
+		//initial(minimum) speed of fruits falling
+		initialSpeed = 1;
+
 		//hide gameover box initially
 		$("#gameOver").hide();
 
@@ -47,6 +50,7 @@ $("#startreset").click(function()
 	}
 });
 
+//slicing fruit
 $("#fruits").mouseover(function()
 {
 	//update the score
@@ -67,10 +71,6 @@ $("#fruits").mouseover(function()
 	setTimeout(sendFruit, 300);
 
 });
-//slicing fruit
-	//play some background sound(confirms fruit as cut)
-	//explode the fruit
-
 
 //funtion to a lives remaining in a game
 function addHearts()
@@ -87,6 +87,7 @@ function sendFruit()
 {
 	generateFruit();
 
+	//if life is less than provided, based on some criteria provide option for more lives
 	if(currentScore % 20 == 0 && currentScore !== 0 && trialsLeft < 3)
 	{
 		sendLife();
@@ -173,13 +174,13 @@ function generateFruit()
 	//random fruit position
 	$("#fruits").css({'left' : Math.round(winSize * Math.random()), 'top' : -100});
 
-	if(currentScore % 10 == 0 && currentScore !== 0 && initialSpeed < 3)
+	if(currentScore % 30 == 0 && currentScore !== 0 && initialSpeed < 3)
 	{
 		initialSpeed++;
 	}
 	//generate random step, changing step
 	step = initialSpeed + Math.round(5*Math.random());
-	
+
 	if(step > 6)
 	{
 		step = 6;
@@ -192,6 +193,7 @@ function sendLife()
 	$(".extraLife").show();
 	$(".extraLife").attr('src', 'images/heart.png');
 
+	//responsive size of heart
 	winSize = $("#gamebox").width();
 	if(winSize >= 670)
 	{
@@ -207,19 +209,22 @@ function sendLife()
 
 	$(".extraLife").css({'left' : Math.round(winSize * Math.random()), 'top' : -100});
 	lifespeed = 2;
+
 	action = setInterval(function()
 	{
 		$(".extraLife").css('top', $(".extraLife").position().top + lifespeed);
 	}, 10);
 	
-
+	//if extra life is selected
 	$(".extraLife").mouseover(function()
 	{
-		//play cut audio
+		//play life audio
 		document.getElementById("lifesound").play();
 
 		//show animation while getting life
 		$(".extraLife").hide("pulsate", 300);
+		
+		//increment the life count in game
 		trialsLeft++;
 		addHearts();
 	});
@@ -232,6 +237,5 @@ function stopFruit()
 	clearInterval(action);
 	$("#fruits").hide();
 }
-
 
 });

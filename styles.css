@@ -7,7 +7,7 @@ body
 {
     height: 600px;
     background-color: #27ace8;
-    margin: 50px auto;
+    margin: 35px auto;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 0px 0px #2129b0;
@@ -127,6 +127,56 @@ body
 {
     display: none;
     position: absolute;
+}
+
+footer
+{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 16px;
+    bottom: 0;
+    left: 0;
+    display: inline-block;  
+    text-align: left;
+}
+
+.fl_left
+{
+    float: left;
+}
+.fl_right
+{
+    float: right;
+}
+
+a
+{
+    outline: none; 
+    text-decoration: none;
+}
+
+/* unvisited link */
+a:link {
+  color: white;
+}
+
+/* visited link */
+a:visited {
+  color: white;
+}
+
+/* mouse over link */
+a:hover {
+  color: red;
+}
+
+/* selected link */
+a:active {
+  color: white;
 }
 
 @media (min-width: 768px) and (max-width: 991px)
